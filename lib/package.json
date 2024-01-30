@@ -1,0 +1,10 @@
+{
+  "name": "react-native-repro",
+  "version": "0.0.1",
+  "main": "src/index.js",
+  "codegenConfig": {
+    "name": "repro_lib",
+    "type": "all",
+    "jsSrcsDir": "./src/specs"
+  }
+}

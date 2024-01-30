@@ -1,118 +1,54 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {useState} from 'react';
+import {SafeAreaView, Button, View} from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import ReproView from 'react-native-repro';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+export default function App() {
+  const [nested, setNested] = useState(true);
+  const [auto, setAuto] = useState(false);
+  const [wide, setWide] = useState(true);
+  const [tall, setTall] = useState(true);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <SafeAreaView style={{flex: 1}}>
+      <Button
+        title={`Toggle ReproView (${nested})`}
+        onPress={() => setNested(!nested)}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
+      <Button
+        title={`Toggle auto W+H (${auto})`}
+        onPress={() => setAuto(!auto)}
+      />
+      <Button title={`Toggle wide (${wide})`} onPress={() => setWide(!wide)} />
+      <Button title={`Toggle tall (${tall})`} onPress={() => setTall(!tall)} />
+      {nested && (
         <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+          style={{width: wide ? 350 : 250, height: tall ? 500 : 400}}
+          collapsable={false}>
+          <ReproView
+            autoSize={auto}
+            style={{
+              width: wide ? 350 : 250,
+              height: tall ? 500 : 400,
+              backgroundColor: 'red',
+            }}>
+            <View style={{width: 200, height: 200, backgroundColor: 'blue'}} />
+          </ReproView>
         </View>
-      </ScrollView>
+      )}
+
+      {!nested && (
+        <View
+          collapsable={false}
+          style={{
+            width: wide ? 350 : 250,
+            height: tall ? 500 : 400,
+            backgroundColor: 'green',
+          }}>
+          <View style={{width: 200, height: 200, backgroundColor: 'blue'}} />
+        </View>
+      )}
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
